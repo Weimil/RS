@@ -16,7 +16,7 @@ class ImageFactory extends Factory
     {
         return [
             Image::USER_ID => User::all()->random()->{User::ID},
-            Image::IMAGE_PATH => 'default.jpg',
+            Image::IMAGE_PATH => 'default.png',
             Image::DESCRIPTION => fake()->sentence(),
         ];
     }

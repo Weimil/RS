@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string(User::SURNAME);
             $table->string(User::EMAIL)->unique();
             $table->string(User::USER_NAME)->unique();
-            $table->string(User::ROLE);
+            $table->string(User::ROLE)->nullable();
             $table->string(User::PASSWORD);
 
             $table->timestamp(User::CREATED_AT)->nullable();

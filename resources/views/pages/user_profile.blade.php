@@ -8,7 +8,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-4 flex items-center justify-center">
             <div class="bg-white overflow-hidden w-1/2 shadow-xl shadow-indigo-500/40 sm:rounded-lg p-5 ">
-{{--                                flex flex-col items-center justify-center--}}
                 <div class="text-center text-2xl mb-1">@<label >{{$user->user_name}}</label></div><hr class="h-1 bg-indigo-500 border-0 rounded">
                 <div class="flex items-center ml-24 mb-1 mt-1 mb-1">
                     <img src="{{'../storage/'.$user->profile_photo_path}}" class="w-1/4" alt="No tienes foto">

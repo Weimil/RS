@@ -1,4 +1,15 @@
 <x-app-layout>
+    <style>
+        .class {
+            border-radius: 4px;
+            border: 1px solid black;
+            margin: 8px;
+            padding: 16px;
+            display: block;
+        }
+
+        /* class="class"*/
+    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Subir Imagen') }}
@@ -11,8 +22,8 @@
                 <form method="POST" action="{{ route('save.image') }}" enctype="multipart/form-data">
                     @csrf
                     <div>
-                        <x-jet-label for="descripcion" value="{{ __('Image') }}"/>
-                        <x-jet-input class="block mt-1 w-full" type="text" name="descripcion" required autofocus/>
+                        <x-jet-label for="description" value="{{ __('Image') }}"/>
+                        <x-jet-input class="block mt-1 w-full" type="text" name="description" required autofocus/>
                     </div>
 
                     <div class="mt-4">

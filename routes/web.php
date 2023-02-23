@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\CommentarioController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Home;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LikeController;
-use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,30 +20,38 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('/pages.index');
+    return view('pages.index');
 });
 
-Route::middleware('auth')->group(function (){
-    Route::get('/subir_imagen', [ImageController::class,'index'])->name('subir.imagen');
-    Route::get('/img_detalle/{id}', [ImageController::class,'detalle']);
-    Route::post('/save_imagen', [ImageController::class,'save'])->name('save.image');
-    Route::post('/delete_image',[ImageController::class,'delete'])->name('delete.image');
+Route::get('debug/like/{image_id}/{user_id}', [LikeController::class, 'debug_like']);
+Route::get('debug/dislike/{image_id}/{user_id}', [LikeController::class, 'debug_dislike']);
 
-    Route::post('/save_comentario', [CommentarioController::class,'save'])->name('save.comentario');
-    Route::post('/delete_comentario', [CommentarioController::class,'delete'])->name('delete.comentario');
+Route::middleware('auth')->group(function () {
+    Route::get('subir_image', [ImageController::class, 'index'])->name('subir.image');
+    Route::get('img_detail/{id}', [ImageController::class, 'detail']);
+    Route::post('save_image', [ImageController::class, 'save'])->name('save.image');
+    Route::post('delete_image', [ImageController::class, 'delete'])->name('delete.image');
 
-    Route::get('/perfil',[PerfilController::class,'index'])->name('perfil');
+    Route::post('save_comment', [CommentController::class, 'save'])->name('save.comment');
+    Route::post('delete_comment', [CommentController::class, 'delete'])->name('delete.comment');
 
-    Route::get('/like/{id}', [LikeController::class,'like'])->name('like');
-    Route::get('/dislike/{id}', [LikeController::class,'dislike']);
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 
-    Route::get('/search', [UserController::class,'search'])->name('usuarios.search');
-    Route::get('/usuarios', [UserController::class,'gente'])->name('usuarios');
-    Route::get('/usuarios/{user}', [UserController::class,'userPerfil'])->name('usuarios.perfil');
-    Route::post('/cancel_friend', [UserController::class,'cancel'])->name('cancelar.amistad');
-    Route::post('/acept_friend', [UserController::class,'aceptar'])->name('aceptar.amistad');
-    Route::post('/denegar_friend', [UserController::class,'denegar'])->name('denegar.amistad');
-    Route::post('/sendFriend', [UserController::class,'send'])->name('send.friend');
+    Route::get('like/{id}', [LikeController::class, 'like']);
+    Route::get('dislike/{id}', [LikeController::class, 'dislike']);
+
+    Route::get('users', [UserController::class, 'index'])->name('users');
+    Route::get('user/{id}', [UserController::class, 'profile'])->name('users.profile');
+    Route::get('search', [UserController::class, 'search'])->name('users.search');
+
+    Route::group([
+        'prefix' => 'friendship'
+    ], function () {
+        Route::post('cancel', [UserController::class, 'cancel'])->name('friendship.cancel');
+        Route::post('accept', [UserController::class, 'accept'])->name('friendship.accept');
+        Route::post('deny', [UserController::class, 'deny'])->name('friendship.deny');
+        Route::post('send', [UserController::class, 'send'])->name('friendship.send');
+    });
 });
 
 Route::middleware([
@@ -52,7 +59,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', [Home::class,'index']
+    Route::get('/dashboard', [Home::class, 'index']
     )->name('dashboard');
 });
 

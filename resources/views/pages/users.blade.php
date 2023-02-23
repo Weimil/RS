@@ -1,42 +1,59 @@
 <x-app-layout>
+    <style>
+        .class {
+            border-radius: 4px;
+            border: 1px solid black;
+            margin: 8px;
+            padding: 16px;
+        }
+    </style>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Usuarios') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-4 flex items-center justify-center flex-col">
-            <div class="bg-white overflow-hidden w-1/2 shadow-xl shadow-indigo-500/40 sm:rounded-lg p-5 mb-5 flex items-center justify-center">
-                <form action="{{ route('usuarios.search') }}" method="GET">
+    <div>
+        <div>
+            <div class="class">
+                <form action="{{ route('users.search') }}" method="GET">
                     <input type="search" placeholder="Buscar" name="buscar" id="Buscador"/>
-                    <button class="bg-indigo-500 text-white p-2" type="submit">Buscar</button>
+                    <button type="submit" class="class">Buscar</button>
                 </form>
             </div>
-            <div class="bg-white overflow-hidden w-1/2 shadow-xl shadow-indigo-500/40 sm:rounded-lg p-5 ">
-                @foreach($users as $user)
+            @foreach($users as $user)
+                @if($user->id === Auth::user()->id)
+                    @continue
+                @endif
+                <div class="class">
                     <hr>
-                    <div class="flex items-center p-3 justify-around">
+                    <div>
                         <div>
                             <img class="w-14" src="{{'storage/'.$user->profile_photo_path}}" alt="Sin imagen">
-                            <h1>{{$user->name}} {{$user->surname}}  <a class="text-indigo-500" href="usuarios/{{$user->id}}"><span>@</span>{{$user->user_name}}</a></h1>
+                            <h1>
+                                {{$user->name}} {{$user->surname}}
+                                <a href="usuarios/{{$user->id}}"><span>@</span>{{$user->user_name}}</a>
+                            </h1>
                         </div>
-                        @if($friends->find($user->id))
-                            Amigo
-                        @elseif($pending->where('recipient_id', $user->id)->count() > 0)
-                            Pending...
-                        @elseif($user->id!=\Auth::user()->id)
-                            <div>
-                                <form action="{{ route('send.friend') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" value="{{$user->id}}" name="recipient">
-                                    <button class="bg-indigo-500 text-white p-2 rounded-2xl">Send friend request</button>
-                                </form>
-                            </div>
-                        @endif
+                        <div class="class">
+                            @if($friends->find($user->id))
+                                Amigo
+                            @elseif($pending->where('recipient_id', $user->id)->count() > 0)
+                                Pending...
+                            @else
+                                <div>
+                                    <form action="{{ route('friendship.send') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" value="{{$user->id}}" name="recipient">
+                                        <button class="class"> Send friend request</button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </x-app-layout>

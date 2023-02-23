@@ -14,8 +14,8 @@ return new class extends Migration
             $table->id(Image::ID);
             $table->foreignId(Image::USER_ID)->constrained(User::TABLE);
 
-            $table->string(Image::IMAGE_PATH);
-            $table->string(Image::DESCRIPTION);
+            $table->string(Image::IMAGE_PATH)->nullable();
+            $table->string(Image::DESCRIPTION)->nullable();
 
             $table->timestamp(Image::CREATED_AT)->nullable();
             $table->timestamp(Image::UPDATED_AT)->nullable();
