@@ -46,12 +46,12 @@
                         <div>
                             @if(count($image->likes)>0)
                                 @if(!$image->likes->where('user_id',Auth::user()->id)->isEmpty())
-                                    <img onclick="handle(this, {{ $image->id }})" id="like" src="images/heart.svg" alt="{{ $image->id }}">
+                                    <img data-token="{{ csrf_token() }}" onclick="handle(this, {{ $image->id }})" id="like" src="images/heart.svg" alt="{{ $image->id }}">
                                 @else
-                                    <img onclick="handle(this, {{ $image->id }})" id="no_like" src="images/heart_no.svg" alt="{{ $image->id }}">
+                                    <img data-token="{{ csrf_token() }}" onclick="handle(this, {{ $image->id }})" id="no_like" src="images/heart_no.svg" alt="{{ $image->id }}">
                                 @endif
                             @else
-                                <img onclick="handle(this, {{ $image->id }})" id="no_like" src="images/heart_no.svg" alt="{{ $image->id }}">
+                                <img data-token="{{ csrf_token() }}" onclick="handle(this, {{ $image->id }})" id="no_like" src="images/heart_no.svg" alt="{{ $image->id }}">
                             @endif
                         </div>
                     </div>
